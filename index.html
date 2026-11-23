@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AI Creator Labs — Portal Belajar AI</title>
+<meta name="description" content="Portal belajar AI dari AI Creator Labs: jalur belajar bertahap, materi, video, dan artikel dalam satu tempat.">
+<meta name="theme-color" content="#05071a">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/styles.css">
+<link rel="stylesheet" href="assets/motion.css">
+<link rel="stylesheet" href="assets/ui.css">
+</head>
+<body data-page="home">
+<div class="backdrop" aria-hidden="true">
+  <div class="scene"><span class="shape s1"></span><span class="shape s2"></span><span class="shape s3"></span><span class="shape s4"></span><span class="shape s5"></span><span class="shape s6"></span></div>
+  <div class="overlay"></div>
+  <div class="grain"></div>
+  <canvas id="particles"></canvas>
+</div>
+<div class="page">
+<header class="site-header" id="site-header"></header>
+<main class="home-main">
+  <p class="eyebrow center reveal">Portal belajar AI untuk kreator</p>
+  <h1 class="display reveal d1">AI Creator <em>Labs</em></h1>
+  <p class="lede reveal d2">Ruang belajar yang tenang untuk memahami AI selangkah demi selangkah — lewat jalur belajar, materi, video, dan artikel.</p>
+  <nav class="reveal d3" id="hero-nav" aria-label="Bagian portal"><ul class="tabs"><li><a class="tab" href="jalur.html">Jalur Belajar</a></li><li><a class="tab" href="resources.html">Materi</a></li><li><a class="tab" href="knowledges.html">Video</a></li><li><a class="tab" href="articles.html">Artikel</a></li></ul></nav>
+  <ul class="pills" id="shortcuts" aria-label="Topik populer"></ul>
+  <div class="chat reveal d5">
+    <form class="chat-box" id="ask" role="search" autocomplete="off">
+      <svg class="spark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3Z"/></svg>
+      <label for="ask-input" class="sr-only">Cari materi belajar</label>
+      <input id="ask-input" type="search" name="q" placeholder="Mau belajar apa hari ini?" enterkeyhint="search">
+      <button class="send" type="submit" aria-label="Cari"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M6 11l6-6 6 6"/></svg></button>
+    </form>
+    <div class="results" id="results" hidden aria-live="polite"></div>
+    <div class="chat-foot">
+      <p class="chat-hint">Cari jalur, topik, materi, video, dan artikel<span class="kbd-wrap"> · tekan <kbd>Enter</kbd></span></p>
+      <a class="admin-btn" href="admin.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6l7-3Z"/><path d="M9.5 12l2 2 3.5-4"/></svg>Admin</a>
+    </div>
+  </div>
+  <div class="home-stats reveal d6"><span><b id="stat-p">0</b> jalur</span><span><b id="stat-r">0</b> materi</span><span><b id="stat-v">0</b> video</span><span><b id="stat-a">0</b> artikel</span></div>
+  <a class="scroll-cue reveal d6" id="scroll-cue" href="#mulai" hidden>Mulai dari mana?<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg></a>
+</main>
+<div class="home-more" id="lanjut">
+  <section class="start" id="mulai" aria-label="Mulai dari mana"></section>
+  <section class="paths-sec" id="paths-sec" aria-label="Peta jalur belajar"></section>
+  <section class="me-panel" id="me" hidden aria-label="Ruang belajarmu"></section>
+  <div id="custom"></div>
+</div>
+<footer class="footer" id="site-footer"></footer>
+</div>
+<nav class="bottom-nav" id="bottom-nav" aria-label="Navigasi cepat"></nav>
+<script src="assets/config.js"></script>
+<script src="assets/data.js"></script>
+<script src="assets/store.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>

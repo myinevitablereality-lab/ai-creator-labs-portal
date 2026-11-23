@@ -1,0 +1,160 @@
+/* =========================================================
+   v2 — Gerak, interaksi, dan konten dinamis
+   ========================================================= */
+@view-transition { navigation: auto; }
+::view-transition-old(root), ::view-transition-new(root) { animation-duration: .38s; animation-timing-function: cubic-bezier(.2,.7,.2,1); }
+.site-header { view-transition-name: site-header; }
+.backdrop { view-transition-name: backdrop; }
+
+/* Cahaya mengikuti kursor */
+.cursor-glow {
+  position: absolute; left: 0; top: 0; width: 600px; height: 600px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(130, 140, 255, 0.16) 0%, rgba(120, 110, 255, 0.06) 35%, transparent 65%);
+  pointer-events: none; will-change: transform; mix-blend-mode: screen;
+}
+
+/* Muncul saat di-scroll */
+.rv { opacity: 0; }
+.rv.in { opacity: 1; animation: rvIn .75s cubic-bezier(.2,.7,.2,1) backwards; animation-delay: calc(var(--i, 0) * 55ms); }
+@keyframes rvIn { from { opacity: 0; transform: translateY(18px) scale(.985); } }
+.pop-in { animation: rvIn .6s cubic-bezier(.2,.7,.2,1) backwards; animation-delay: calc(.35s + var(--i, 0) * 60ms); }
+
+/* Kartu miring + sorotan cahaya */
+.tilt { --rx: 0deg; --ry: 0deg; --ty: 0px; transform: perspective(900px) translateY(var(--ty)) rotateX(var(--rx)) rotateY(var(--ry)); transition: transform .45s cubic-bezier(.2,.7,.2,1), border-color .25s, background .25s; }
+.tilt:hover { --ty: -4px; transition: transform .12s linear, border-color .25s, background .25s; }
+.tilt::before {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; z-index: 0;
+  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 0%), rgba(170, 180, 255, 0.14), transparent 45%);
+  opacity: 0; transition: opacity .3s;
+}
+.tilt:hover::before { opacity: 1; }
+.card:hover, .tag-card:hover { transform: perspective(900px) translateY(var(--ty)) rotateX(var(--rx)) rotateY(var(--ry)); }
+.hl-media, .hl-body { position: relative; }
+
+/* Link yang menutupi seluruh kartu */
+.stretched { color: inherit; }
+.stretched::after { content: ""; position: absolute; inset: 0; z-index: 1; border-radius: inherit; }
+.stretched:focus-visible { outline: none; }
+.stretched:focus-visible::after { outline: 2px solid var(--accent-2); outline-offset: 2px; }
+.card, .featured, .vcard, .arow { position: relative; }
+
+/* Tombol simpan & tanda selesai */
+.save-btn {
+  position: relative; z-index: 3; flex: none;
+  width: 34px; height: 34px; border-radius: 50%; display: inline-grid; place-items: center;
+  border: 1px solid var(--line); background: rgba(10, 13, 38, 0.55); color: var(--ink-soft);
+  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+  transition: background .2s, color .2s, border-color .2s, transform .2s;
+}
+.save-btn svg { width: 15px; height: 15px; }
+.save-btn:hover { color: var(--ink); border-color: var(--line-strong); }
+.save-btn[aria-pressed="true"] { color: var(--accent-ink); background: var(--accent-2); border-color: var(--accent-2); }
+.save-btn[aria-pressed="true"] svg { fill: currentColor; }
+.save-btn.pop { animation: pop2 .35s ease; }
+@keyframes pop2 { 40% { transform: scale(1.22); } }
+.done-badge { position: relative; z-index: 3; width: 26px; height: 26px; border-radius: 50%; display: inline-grid; place-items: center; background: rgba(120, 220, 170, 0.16); color: #8ff0c0; border: 1px solid rgba(143, 240, 192, 0.35); }
+.done-badge svg { width: 13px; height: 13px; }
+.card-top-r { display: inline-flex; align-items: center; gap: 8px; }
+.card-img { width: calc(100% + 44px); margin: -22px -22px 4px; aspect-ratio: 16/8; object-fit: cover; border-radius: var(--radius) var(--radius) 0 0; max-width: none; }
+
+/* Video */
+.vthumb { position: relative; }
+.vcard-actions { position: absolute; top: 10px; right: 10px; z-index: 3; display: flex; gap: 6px; align-items: center; }
+.vcard .stretched::after { border-radius: 14px; }
+.thumb img.art { width: 100%; height: 100%; object-fit: cover; }
+.featured .f-body h2 a { color: inherit; }
+.featured .btn { position: relative; z-index: 2; pointer-events: none; }
+.vplay { all: unset; display: block; width: 100%; cursor: pointer; }
+.player { position: relative; aspect-ratio: 16 / 9; background: #000; }
+.player iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+
+/* Artikel */
+li.arow { display: grid; grid-template-columns: 120px 1fr auto; gap: 24px; align-items: baseline; }
+.arow h3 a { color: inherit; }
+.a-side { display: inline-flex; align-items: center; gap: 12px; }
+.a-done { display: inline-flex; align-items: center; gap: 4px; color: #8ff0c0 !important; }
+.a-done svg { width: 12px; height: 12px; }
+
+/* Dialog */
+.sheet-cover { width: 100%; aspect-ratio: 16/8; object-fit: cover; border-bottom: 1px solid var(--line); }
+.sheet-cover.big { aspect-ratio: auto; max-height: 60svh; object-fit: contain; background: #05061a; }
+.sheet .lead { font-size: 17px; color: var(--ink); }
+.sheet .s-actions .save-btn { width: 42px; height: 42px; }
+.price { display: inline-block; font-weight: 600; color: var(--accent-2); font-size: 14px; margin-top: 4px; }
+.price.big { font-size: 22px; margin: 0 0 10px; }
+
+/* Hasil pencarian beranda */
+.result { animation: rvIn .4s cubic-bezier(.2,.7,.2,1) backwards; animation-delay: calc(var(--i, 0) * 35ms); }
+
+/* Beranda: bagian bawah */
+.home-main { min-height: calc(100svh - 76px); }
+.scroll-cue { display: inline-flex; flex-direction: column; align-items: center; gap: 6px; margin-top: 30px; font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--dim); transition: color .2s; }
+.scroll-cue:hover { color: var(--ink); }
+.scroll-cue svg { width: 16px; height: 16px; animation: bob 2.2s ease-in-out infinite; }
+.scroll-cue[hidden] { display: none; }
+@keyframes bob { 50% { transform: translateY(5px); } }
+.home-more { width: 100%; max-width: var(--maxw); margin: 0 auto; padding: 24px var(--gutter) 56px; display: grid; gap: 72px; }
+#custom { display: grid; gap: 72px; }
+#custom:empty { display: none; }
+.hl-head { max-width: 640px; margin-bottom: 24px; }
+.h2 { font-family: var(--serif); font-weight: 400; font-size: clamp(32px, 4.4vw, 46px); line-height: 1.05; margin: 12px 0 0; }
+.h2 em { font-style: italic; background: linear-gradient(100deg, #c9cbff, #8fd6ff); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; padding-right: .05em; }
+.hl-head p:not(.eyebrow) { color: var(--muted); margin: 10px 0 0; font-size: 15px; }
+.hl-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; }
+.hl-card {
+  position: relative; display: flex; flex-direction: column; text-align: left; width: 100%; padding: 0; color: inherit;
+  border-radius: var(--radius); border: 1px solid var(--line); overflow: hidden;
+  background: linear-gradient(180deg, rgba(22, 27, 66, 0.62), rgba(12, 15, 40, 0.62));
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+}
+button.hl-card { cursor: pointer; }
+.hl-card:hover { border-color: var(--line-strong); }
+.hl-media { position: relative; display: block; aspect-ratio: 16/10; overflow: hidden; background: #0b0e2a; }
+.hl-media img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s ease; }
+.hl-card:hover .hl-media img { transform: scale(1.05); }
+.hl-media .play { position: absolute; left: 50%; top: 50%; translate: -50% -50%; width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; background: rgba(255,255,255,.16); border: 1px solid rgba(255,255,255,.4); backdrop-filter: blur(8px); }
+.hl-media .play svg { width: 16px; height: 16px; margin-left: 3px; color: #fff; }
+.hl-body { display: flex; flex-direction: column; gap: 6px; padding: 16px 18px 18px; }
+.hl-title { font-family: var(--serif); font-size: 22px; line-height: 1.15; }
+.hl-desc { color: var(--muted); font-size: 14px; }
+.hl-more { display: inline-flex; align-items: center; gap: 6px; margin-top: 4px; font-size: 13px; color: var(--accent-2); }
+.hl-more svg { width: 13px; height: 13px; }
+.hl-card.text { min-height: 150px; }
+
+/* Ruang belajarmu */
+.me-panel[hidden] { display: none; }
+.me-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.me-col { padding: 20px; border-radius: var(--radius); border: 1px solid var(--line); background: rgba(14, 18, 46, 0.5); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.me-col h3 { font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--dim); font-weight: 600; margin: 0 0 8px; display: flex; gap: 8px; align-items: center; }
+.me-col .count { color: var(--accent-2); letter-spacing: 0; }
+.me-col .muted { color: var(--muted); font-size: 14px; margin: 0; }
+.prog { display: block; padding: 8px 0; }
+.prog-top { display: flex; justify-content: space-between; font-size: 14px; color: var(--ink-soft); margin-bottom: 8px; }
+.prog-top b { font-weight: 600; color: var(--ink); font-variant-numeric: tabular-nums; }
+.bar { display: block; height: 6px; border-radius: 99px; background: rgba(255,255,255,.07); overflow: hidden; }
+.bar span { display: block; height: 100%; width: var(--w); border-radius: inherit; background: linear-gradient(90deg, #a5a8ff, #8fd6ff); animation: grow 1.2s cubic-bezier(.2,.7,.2,1) backwards .2s; }
+@keyframes grow { from { width: 0; } }
+.mini { display: flex; align-items: center; gap: 12px; padding: 8px; margin: 0 -8px; border-radius: 12px; transition: background .15s; min-width: 0; }
+.mini:hover { background: rgba(255,255,255,.06); }
+.mini .r-ico { width: 32px; height: 32px; border-radius: 10px; display: grid; place-items: center; border: 1px solid var(--line); flex: none; color: var(--accent); }
+.mini .r-ico svg { width: 15px; height: 15px; }
+.mini .r-text { min-width: 0; }
+.mini strong { display: block; font-weight: 500; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mini .r-text > span { display: block; font-size: 12px; color: var(--muted); }
+
+body:not(.ready) #grid, body:not(.ready) #vgrid { min-height: 50vh; }
+
+@media (max-width: 860px) {
+  li.arow { grid-template-columns: 1fr; gap: 6px; }
+  .a-side { justify-content: space-between; }
+  .me-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 520px) {
+  .hl-grid { grid-template-columns: 1fr; }
+  .home-more, #custom { gap: 56px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  @view-transition { navigation: none; }
+  .rv { opacity: 1; }
+  .tilt, .tilt:hover { transform: none !important; }
+}

@@ -493,7 +493,7 @@
     if (h) {
       h.innerHTML = `<nav class="inner" aria-label="Navigasi utama">
         <a class="brand" href="index.html" aria-label="AI Creator Labs — beranda">${LOGO}<span>AI Creator Labs<small>Portal belajar</small></span></a>
-        <ul class="tabs">${NAV.map(([k, href, l]) => `<li><a class="tab" href="${href}"${cur(k)}>${l}</a></li>`).join("")}</ul>
+        <ul class="tabs">${[["home", "index.html", "Beranda"], ...NAV].map(([k, href, l]) => `<li><a class="tab" href="${href}"${cur(k)}>${l}</a></li>`).join("")}</ul>
         <div class="h-acts">
           <button class="search-btn" type="button" data-palette aria-label="Cari (${isMac ? "⌘" : "Ctrl"} K)">${I.search}<span>Cari</span><kbd>${isMac ? "⌘" : "Ctrl"} K</kbd></button>
           <button class="icon-btn" type="button" data-saved aria-label="Tersimpan" title="Tersimpan">${I.mark}<span class="dot-count" id="saved-count" hidden></span></button>

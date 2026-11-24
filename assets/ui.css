@@ -294,3 +294,26 @@ body[data-page="jalur"] .path-map { margin-top: 8px; }
 .in-paths { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 24px; font-size: 13.5px; color: var(--dim); }
 .in-paths .pill { font-size: 13px; padding: 6px 12px; }
 .topic-index .t-name::before { content: none; }
+
+/* ---------- Penanda level (halaman jalur) ---------- */
+.lv-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; margin: 0 0 18px; }
+.lv-label { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--dim); font-weight: 600; }
+.lv-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+.lv-pill {
+  --c: 150, 160, 220;
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 7px 16px; border-radius: 999px; font-size: 13px; font-weight: 500; line-height: 1;
+  color: rgba(var(--c), .85); border: 1px solid rgba(var(--c), .35); background: rgba(var(--c), .04);
+  text-decoration: none; transition: background .2s, border-color .2s, color .2s, transform .2s, box-shadow .2s;
+}
+.lv-pill:hover { border-color: rgba(var(--c), .7); color: rgb(var(--c)); background: rgba(var(--c), .1); }
+.lv-pill.lv-1 { --c: 94, 220, 160; }
+.lv-pill.lv-2 { --c: 255, 196, 92; }
+.lv-pill.lv-3 { --c: 255, 110, 140; }
+.lv-pill.on { color: #0a0c1f; background: rgb(var(--c)); border-color: rgb(var(--c)); font-weight: 600; padding: 9px 20px; font-size: 14px; box-shadow: 0 0 0 4px rgba(var(--c), .16), 0 8px 24px -8px rgba(var(--c), .6); }
+.lv-pill.lv-all.on { color: #0a0c1f; background: #e8eaff; border-color: #e8eaff; --c: 200, 205, 255; }
+.lv-dot { width: 7px; height: 7px; border-radius: 50%; background: #0a0c1f; opacity: .7; }
+.lv-meta { margin: -6px 0 18px; }
+.path-card.dim { opacity: .35; filter: saturate(.4); }
+.path-card.dim:hover { opacity: .7; }
+@media (max-width: 520px) { .lv-pill { padding: 7px 12px; font-size: 12.5px; } .lv-pill.on { padding: 8px 15px; font-size: 13.5px; } }

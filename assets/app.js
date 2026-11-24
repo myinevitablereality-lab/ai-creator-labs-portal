@@ -526,7 +526,7 @@
   function pathCard(p, rec, opts = {}) {
     const s = pathStats(p), inRoute = rec && rec.route.includes(p), isCur = rec && rec.current === p;
     return `
-      <a class="path-card tilt rv ${isCur ? "current" : ""} ${s.complete ? "complete" : ""}" href="jalur.html?p=${p.id}">
+      <a class="path-card tilt rv ${isCur ? "current" : ""} ${s.complete ? "complete" : ""} ${opts.level && p.level !== opts.level ? "dim" : ""}" href="jalur.html?p=${p.id}">
         <span class="pc-top"><span class="pc-n">Jalur ${p.n}</span>${isCur ? `<span class="badge">Disarankan untukmu</span>` : inRoute ? `<span class="badge soft">Di rutemu</span>` : ""}${s.complete ? `<span class="badge ok">${I.check} Selesai</span>` : ""}</span>
         <span class="pc-title">${esc(p.title)}</span>
         ${opts.desc ? `<span class="pc-desc">${esc(p.desc)}</span>` : ""}
@@ -534,6 +534,15 @@
         <span class="bar"><span style="--w:${s.pct}%"></span></span>
         <span class="pc-foot"><span>${s.done ? `${s.pct}% selesai` : "Belum dimulai"}</span>${I.right}</span>
       </a>`;
+  }
+  // Penanda level: semua level + tiap level, yang aktif diberi warna khusus
+  const LV_CLASS = { Pemula: "lv-1", Menengah: "lv-2", Lanjut: "lv-3" };
+  function levelBar(cur, label) {
+    const pill = (lv, text) => {
+      const on = (lv || "") === (cur || "");
+      return `<a class="lv-pill ${lv ? LV_CLASS[lv] || "" : "lv-all"} ${on ? "on" : ""}" href="jalur.html${lv ? `?level=${encodeURIComponent(lv)}` : ""}"${on ? ` aria-current="true"` : ""}>${on && lv ? `<span class="lv-dot" aria-hidden="true"></span>` : ""}${esc(text)}</a>`;
+    };
+    return `<nav class="lv-bar reveal" aria-label="Tingkatan level">${label ? `<span class="lv-label">${label}</span>` : ""}<div class="lv-pills">${pill("", "Semua level")}${LEVELS.map((l) => pill(l, l)).join("")}</div></nav>`;
   }
   function pathMap(rec, opts = {}) {
     const cols = [];
@@ -778,7 +787,9 @@
   function jalurPage() {
     const root = $("#jalur");
     function view() {
-      const id = new URLSearchParams(location.search).get("p"), p = id && pathOf(id);
+      const qs = new URLSearchParams(location.search), id = qs.get("p"), p = id && pathOf(id);
+      const lvF = LEVELS.includes(qs.get("level")) ? qs.get("level") : "";
+      const lvN = lvF ? D.paths.filter((x) => x.level === lvF).length : 0;
       const rec = recommend(S.me.profile());
       if (!p) {
         document.title = "Jalur Belajar — AI Creator Labs";
@@ -789,7 +800,7 @@
             <p class="lede reveal d2">Setiap jalur berisi langkah berurutan dari materi, video, dan artikel. Mulai dari Jalur 1 bila baru mengenal AI, lalu pilih cabang sesuai tujuanmu.</p>
           </div>
           ${rec ? `<div class="start-strip rv">${I.spark}<span>Disarankan untukmu: <b>${esc(rec.current.title)}</b> · ${rec.route.map((r) => esc(r.title)).join(" → ")}</span><a class="btn small" href="jalur.html?p=${rec.current.id}">Buka jalur</a></div>` : `<div class="start-strip rv">${I.spark}<span>Bingung mulai dari mana? Jawab 3 pertanyaan singkat di beranda.</span><a class="btn small" href="index.html#mulai" data-reonboard>Bantu saya memilih</a></div>`}
-          ${D.paths.length ? pathMap(rec, { desc: true }) : emptyState("Belum ada jalur belajar.")}
+          ${D.paths.length ? `${levelBar(lvF)}${lvF ? `<p class="result-meta lv-meta">${lvN ? `${lvN} jalur level <b>${esc(lvF)}</b> disorot di peta.` : `Belum ada jalur level <b>${esc(lvF)}</b>.`}</p>` : ""}${pathMap(rec, { desc: true, level: lvF })}` : emptyState("Belum ada jalur belajar.")}
           <div class="how rv"><div><b>1</b><span>Ikuti langkah sesuai urutan. Setiap langkah bisa dibuka langsung dari halaman jalur.</span></div><div><b>2</b><span>Tandai “sudah dipelajari” agar progresmu tercatat di perangkat ini.</span></div><div><b>3</b><span>Semua konten tetap bisa diakses bebas lewat Materi, Video, Artikel, atau Topik.</span></div></div>`;
       } else {
         document.title = `${p.title} — Jalur Belajar · AI Creator Labs`;
@@ -798,7 +809,7 @@
         root.innerHTML = `
           <a class="back-link reveal" href="jalur.html">${I.left} Semua jalur</a>
           <div class="page-head path-head">
-            <p class="eyebrow reveal">Jalur ${p.n}${p.level ? " · " + esc(p.level) : ""}</p>
+            ${levelBar(p.level, `Jalur ${p.n}`)}
             <h1 class="page-title reveal d1">${esc(p.title)}</h1>
             <p class="lede reveal d2">${esc(p.desc)}</p>
             <div class="path-stats reveal d3"><span><b>${s.total}</b> langkah</span><span><b>${fmtMin(s.min).replace("±", "")}</b> total</span><span><b>${s.pct}%</b> selesai</span></div>
